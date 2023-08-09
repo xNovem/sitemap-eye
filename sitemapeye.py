@@ -1,46 +1,57 @@
-import os
-from bs4 import BeautifulSoup
 import requests
-from colorama import Fore, Style
+from bs4 import BeautifulSoup
 
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-def print_header():
-    print(Fore.CYAN + """
-  ____ ____ _  _ ____ _  _    _ _ _ ____ ___ ____ _ ____ _  _ 
-  |    |  | |\/| |  | |\ |    | | | |  |  |  |  | |  | |  | 
-  |___ |__| |  | |__| | \|    |_|_| |__|  |  |__| |__|  \/  
-                                                            
-    Site Haritası Çıkartma Aracı
-    """ + Style.RESET_ALL)
-
-def get_site_map(url):
+def get_links(url):
     response = requests.get(url)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.content, 'html.parser')
-        links = soup.find_all('a')
-        return [link.get('href') for link in links if link.get('href') and not link.get('href').startswith('#')]
-    else:
-        print("Hata: Sayfa alınamadı.")
+    soup = BeautifulSoup(response.content, 'html.parser')
+    links = []
 
-def print_site_map(site_map, depth=0):
-    if site_map is None:
-        return
+    for link in soup.find_all('a'):
+        link_url = link.get('href')
+        if link_url and link_url.startswith('http'):
+            links.append(link_url)
     
-    for link in site_map:
-        print("|" + "=" * (4 * depth) + "> " + link)
-        nested_links = get_site_map(link)
-        if nested_links:
-            print_site_map(nested_links, depth + 1)
+    return links
 
-def main():
-    clear_screen()
-    print_header()
-    site_url = input("\nSite URL'sini girin: ")
-    site_map = get_site_map(site_url)
-    print("\nSite Haritası:")
-    print_site_map(site_map)
+def create_sitemap(start_url, max_depth=3):
+    sitemap = {}
+    visited = set()
+    
+    def crawl(url, depth):
+        if depth > max_depth or url in visited:
+            return
+        visited.add(url)
+        
+        links = get_links(url)
+        sitemap[url] = links
+        
+        for link in links:
+            crawl(link, depth + 1)
+    
+    crawl(start_url, 0)
+    return sitemap
 
-if __name__ == "__main__":
-    main()
+def print_sitemap(sitemap, indentation='|=====> '):
+    for page, links in sitemap.items():
+        print(f"{indentation}{page}")
+        for link in links:
+            print(f"{indentation}  -> {link}")
+
+banner = """
+ _______  ___      _______  __   __  _______  __   __ 
+|       ||   |    |   _   ||  | |  ||   _   ||  | |  |
+|    _  ||   |    |  |_|  ||  |_|  ||  |_|  ||  |_|  |
+|   |_| ||   |    |       ||       ||       ||       |
+|    ___||   |___ |       ||       ||       ||       |
+|   |    |       ||   _   ||   _   ||   _   | |     | 
+|___|    |_______||__| |__||__| |__||__| |__|  |___|  
+                                                     
+"""
+
+print(banner)
+print("Welcome to SiteMap Eye!")
+url = input("Enter the URL to generate the site map: ")
+sitemap = create_sitemap(url)
+
+print("\nGenerated Site Map:")
+print_sitemap(sitemap)
