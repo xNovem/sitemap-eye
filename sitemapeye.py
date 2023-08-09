@@ -72,9 +72,9 @@ def main():
     sitemap = create_sitemap(url)
 
     output_filename = 'sitemap.txt'
-    print(colored(f"Generated Site Map saved to '{output_filename}':", 'red'))
     print_sitemap_to_file(sitemap, output_filename)
     print_sitemap(sitemap)
+    print(colored(f"Generated Site Map saved to '{output_filename}':", 'red'))
     print(created_by)
 
 if __name__ == "__main__":
