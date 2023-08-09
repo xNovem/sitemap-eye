@@ -1,6 +1,10 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 from termcolor import colored
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def get_links(url):
     response = requests.get(url)
@@ -11,24 +15,24 @@ def get_links(url):
         link_url = link.get('href')
         if link_url and link_url.startswith('http'):
             links.append(link_url)
-    
+
     return links
 
 def create_sitemap(start_url, max_depth=3):
     sitemap = {}
     visited = set()
-    
+
     def crawl(url, depth):
         if depth > max_depth or url in visited:
             return
         visited.add(url)
-        
+
         links = get_links(url)
         sitemap[url] = links
-        
+
         for link in links:
             crawl(link, depth + 1)
-    
+
     crawl(start_url, 0)
     return sitemap
 
@@ -53,9 +57,13 @@ created_by = colored("Created By ", 'red') + colored("xNovem", 'red') + colored(
 print(banner)
 print(created_by)
 print("Welcome to SiteMap Eye!")
+
 url = input("Enter the URL to generate the site map: ")
+print(colored("Generating sitemap...", 'green'))
 sitemap = create_sitemap(url)
 
-print("\nGenerated Site Map:")
+clear_screen()
+
+print(colored("Generated Site Map:", 'red'))
 print_sitemap(sitemap)
 print(created_by)
