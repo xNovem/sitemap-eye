@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os
 from bs4 import BeautifulSoup
 import requests
@@ -26,6 +25,9 @@ def get_site_map(url):
         print("Hata: Sayfa alınamadı.")
 
 def print_site_map(site_map, depth=0):
+    if site_map is None:
+        return
+    
     for link in site_map:
         print("|" + "=" * (4 * depth) + "> " + link)
         nested_links = get_site_map(link)
