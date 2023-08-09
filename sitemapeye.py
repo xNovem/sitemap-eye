@@ -59,7 +59,8 @@ print(created_by)
 print("Welcome to SiteMap Eye!")
 
 url = input("Enter the URL to generate the site map: ")
-print(colored("Generating sitemap...", 'green'))
+clear_screen()
+print(colored("Generating sitemap...", 'red'))
 sitemap = create_sitemap(url)
 
 clear_screen()
