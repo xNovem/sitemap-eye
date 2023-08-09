@@ -48,13 +48,13 @@ banner = colored("""
 
 """, 'red')
 
-created_by = colored("Created By ", 'red') + colored("xNovem", 'red') + colored("\n( ", 'red') + colored("https://github.com/xNovem", 'yellow') + colored(" )", 'red')
-
-print(banner)
-print("Welcome to SiteMap Eye!")
 url = input("Enter the URL to generate the site map: ")
 sitemap = create_sitemap(url)
 
+print(banner)
+print("Welcome to SiteMap Eye!")
 print("\nGenerated Site Map:")
 print_sitemap(sitemap)
+
+created_by = colored("\nCreated By ", 'red') + colored("xNovem", 'red') + colored("\n( ", 'red') + colored("https://github.com/xNovem", 'yellow') + colored(" )", 'red')
 print(created_by)
