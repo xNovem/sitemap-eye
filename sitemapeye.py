@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from termcolor import colored
 
 def get_links(url):
     response = requests.get(url)
@@ -31,25 +32,23 @@ def create_sitemap(start_url, max_depth=3):
     crawl(start_url, 0)
     return sitemap
 
-def print_sitemap(sitemap, indentation=' '):
+def print_sitemap(sitemap, indentation='|=====> '):
     for page, links in sitemap.items():
-        print(f"{indentation}{page}")
+        print(colored(f"{indentation}{page}", 'green'))
         for link in links:
             print(f"{indentation}  -> {link}")
 
-banner = """
+banner = colored("""
+ ____  _ _       __  __
+/ ___|(_) |_ ___|  \/  | __ _ _ __
+\___ \| | __/ _ \ |\/| |/ _` | '_ \\
+ ___) | | ||  __/ |  | | (_| | |_) |
+|____/|_|\__\___|_|  |_|\__,_| .__/
+                             |_|
 
-____  _ _       __  __               _____
-/ ___|(_) |_ ___|  \/  | __ _ _ __   | ____|   _  ___
-\___ \| | __/ _ \ |\/| |/ _` | '_ \  |  _|| | | |/ _ \
- ___) | | ||  __/ |  | | (_| | |_) | | |__| |_| |  __/
-|____/|_|\__\___|_|  |_|\__,_| .__/  |_____\__, |\___|
-                             |_|           |___/
+""", 'red')
 
-    Created By xNovem
-( https:/github.com/xNovem )
-
-"""
+created_by = colored("Created By ", 'red') + colored("xNovem", 'red') + colored("\n( ", 'red') + colored("https://github.com/xNovem", 'yellow') + colored(" )", 'red')
 
 print(banner)
 print("Welcome to SiteMap Eye!")
@@ -58,3 +57,4 @@ sitemap = create_sitemap(url)
 
 print("\nGenerated Site Map:")
 print_sitemap(sitemap)
+print(created_by)
