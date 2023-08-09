@@ -1,25 +1,26 @@
 # -*- coding: utf-8 -*-
 import os
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 import requests
+from colorama import Fore, Style
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def print_header():
-    print("""
+    print(Fore.CYAN + """
   ____ ____ _  _ ____ _  _    _ _ _ ____ ___ ____ _ ____ _  _ 
   |    |  | |\/| |  | |\ |    | | | |  |  |  |  | |  | |  | 
   |___ |__| |  | |__| | \|    |_|_| |__|  |  |__| |__|  \/  
                                                             
-    SiteMap EYE 
-    """)
+    Site Haritası Çıkartma Aracı
+    """ + Style.RESET_ALL)
 
 def get_site_map(url):
     response = requests.get(url)
     if response.status_code == 200:
-        soup = BeautifulSoup(response.content)
-        links = soup.findAll('a')
+        soup = BeautifulSoup(response.content, 'html.parser')
+        links = soup.find_all('a')
         return [link.get('href') for link in links if link.get('href') and not link.get('href').startswith('#')]
     else:
         print("Hata: Sayfa alınamadı.")
@@ -34,7 +35,7 @@ def print_site_map(site_map, depth=0):
 def main():
     clear_screen()
     print_header()
-    site_url = raw_input("\nSite URL'sini girin: ")
+    site_url = input("\nSite URL'sini girin: ")
     site_map = get_site_map(site_url)
     print("\nSite Haritası:")
     print_site_map(site_map)
