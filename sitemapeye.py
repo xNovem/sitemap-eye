@@ -36,35 +36,40 @@ def create_sitemap(start_url, max_depth=3):
     crawl(start_url, 0)
     return sitemap
 
-def print_sitemap(sitemap, indentation=''):
-    for page, links in sitemap.items():
-        print(colored(f"{indentation}{page}", 'green'))
-        for link in links:
-            print(colored(f"{indentation}  -> {link}", 'green'))
+def print_sitemap_to_file(sitemap, filename, indentation=''):
+    with open(filename, 'w') as f:
+        for page, links in sitemap.items():
+            f.write(f"{indentation}{page}\n")
+            for link in links:
+                f.write(f"{indentation}  -> {link}\n")
 
-banner = colored("""
- ____  _ _       __  __
-/ ___|(_) |_ ___|  \/  | __ _ _ __
-\___ \| | __/ _ \ |\/| |/ _` | '_ \\
- ___) | | ||  __/ |  | | (_| | |_) |
-|____/|_|\__\___|_|  |_|\__,_| .__/
-                             |_|
+def main():
+    banner = colored("""
+     ____  _ _       __  __
+    / ___|(_) |_ ___|  \/  | __ _ _ __
+    \___ \| | __/ _ \ |\/| |/ _` | '_ \\
+     ___) | | ||  __/ |  | | (_| | |_) |
+    |____/|_|\__\___|_|  |_|\__,_| .__/
+                                 |_|
 
-""", 'red')
+    """, 'red')
 
-created_by = colored("Created By ", 'red') + colored("xNovem", 'red') + colored("\n( ", 'red') + colored("https://github.com/xNovem", 'yellow') + colored(" )", 'red')
+    created_by = colored("Created By ", 'red') + colored("xNovem", 'red') + colored("\n( ", 'red') + colored("https://github.com/xNovem", 'yellow') + colored(" )", 'red')
 
-print(banner)
-print(created_by)
-print("Welcome to SiteMap Eye!")
+    print(banner)
+    print(created_by)
+    print("Welcome to SiteMap Eye!")
 
-url = input("Enter the URL to generate the site map: ")
-clear_screen()
-print(colored("Generating sitemap...", 'red'))
-sitemap = create_sitemap(url)
+    url = input("Enter the URL to generate the site map: ")
+    clear_screen()
+    print(colored("Generating sitemap...", 'red'))
+    sitemap = create_sitemap(url)
 
-clear_screen()
+    output_filename = 'sitemap.txt'
+    print(colored(f"Generated Site Map saved to '{output_filename}':", 'red'))
+    print_sitemap_to_file(sitemap, output_filename)
+    print_sitemap(sitemap)
+    print(created_by)
 
-print(colored("Generated Site Map:", 'red'))
-print_sitemap(sitemap)
-print(created_by)
+if __name__ == "__main__":
+    main()
