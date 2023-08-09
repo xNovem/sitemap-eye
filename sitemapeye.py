@@ -31,21 +31,24 @@ def create_sitemap(start_url, max_depth=3):
     crawl(start_url, 0)
     return sitemap
 
-def print_sitemap(sitemap, indentation='|=====> '):
+def print_sitemap(sitemap, indentation=' '):
     for page, links in sitemap.items():
         print(f"{indentation}{page}")
         for link in links:
             print(f"{indentation}  -> {link}")
 
 banner = """
- _______  ___      _______  __   __  _______  __   __ 
-|       ||   |    |   _   ||  | |  ||   _   ||  | |  |
-|    _  ||   |    |  |_|  ||  |_|  ||  |_|  ||  |_|  |
-|   |_| ||   |    |       ||       ||       ||       |
-|    ___||   |___ |       ||       ||       ||       |
-|   |    |       ||   _   ||   _   ||   _   | |     | 
-|___|    |_______||__| |__||__| |__||__| |__|  |___|  
-                                                     
+
+____  _ _       __  __               _____
+/ ___|(_) |_ ___|  \/  | __ _ _ __   | ____|   _  ___
+\___ \| | __/ _ \ |\/| |/ _` | '_ \  |  _|| | | |/ _ \
+ ___) | | ||  __/ |  | | (_| | |_) | | |__| |_| |  __/
+|____/|_|\__\___|_|  |_|\__,_| .__/  |_____\__, |\___|
+                             |_|           |___/
+
+    Created By xNovem
+( https:/github.com/xNovem )
+
 """
 
 print(banner)
