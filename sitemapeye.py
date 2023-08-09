@@ -36,11 +36,11 @@ def create_sitemap(start_url, max_depth=3):
     crawl(start_url, 0)
     return sitemap
 
-def print_sitemap(sitemap, indentation='|=====> '):
+def print_sitemap(sitemap, indentation=''):
     for page, links in sitemap.items():
         print(colored(f"{indentation}{page}", 'green'))
         for link in links:
-            print(f"{indentation}  -> {link}")
+            print(colored(f"{indentation}  -> {link}", 'green'))
 
 banner = colored("""
  ____  _ _       __  __
